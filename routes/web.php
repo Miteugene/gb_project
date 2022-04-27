@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\InfoController as InfoController;
+use App\Http\Controllers\CategoryController as CategoryController;
+use App\Http\Controllers\UserController as UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,25 +19,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [InfoController::class, 'index'])
+    ->name('info');
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/news', AdminNewsController::class);
 });
 
-// Страница приветствия пользователей
-Route::get('/hello/{name}', function ( string $name ) {
-    return "Hello, {$name}!";
-})->where(['name' => '\w+']);
 
-// Страница с информацией о проекте
-Route::get('/info', function () {
-    return "Laravel project";
+Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
+    // /news -- Выведет категории новостей
+    Route::get('/',      [CategoryController::class, 'index'])
+        ->name('categories');
+
+    // /news/{catId} -- Новости определенной категрии
+    Route::get('/{catId}', [NewsController::class, 'index'])
+        ->where(['catId' => '\d+'])
+        ->name('news');
+
+    // /news/{catId}/{id} -- Выведет конкретную новость
+    Route::get('/{catId}/{id}', [NewsController::class, 'show'])
+        ->where(['catId' => '\d+', 'id' => '\d+'])
+        ->name('show');
 });
 
-// Страница для вывода одной или нескольких новостей
-Route::get('/news/{news?}', function ( string $news = null ) {
-    if ( !$news )
-        return "Список всех новостей";
 
-    return "Конкретная новость: {$news}";
-})->where(['news' => '\w+']);
+Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
+    Route::get('/auth', [UserController::class, 'auth'])
+    ->name('auth');
+});
 
