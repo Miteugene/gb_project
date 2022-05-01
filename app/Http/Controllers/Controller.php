@@ -19,7 +19,7 @@ class Controller extends BaseController
             for ($i = 1; $i <= 5; $i++)
                 $catMap[$i] = [
                     'catId' => $i,
-                    'title' => "cat name {$i}",
+                    'title' => "Категория #{$i}",
                 ];
 
         return $catMap;
@@ -38,10 +38,10 @@ class Controller extends BaseController
                     $newsMap[$newsId] = [
                         'id'        => $newsId,
                         'catId'     => $catId,
-                        'title'     => "test title {$catId}/{$i}",
-                        'author'    => "test author {$catId}/{$i}",
-                        'image'     => "test image {$catId}/{$i}",
-                        'text'      => "test text {$catId}/{$i}",
+                        'title'     => "Заголовок новости из категории: #{$catId}, id новости: #{$i}",
+                        'author'    => substr(md5("{$catId}/{$i}"), 0, 5),
+                        'image'     => "https://leonardo.osnova.io/0c6392dd-2c8a-5fe5-ad3e-52f13985ac30/-/preview/1900/-/format/webp/",
+                        'text'      => "Текст новости из категории: #{$catId}, id новости: #{$i}",
                         'date'      => now('Europe/Moscow'),
                     ];
                 }

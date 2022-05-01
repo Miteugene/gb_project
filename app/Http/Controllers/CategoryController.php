@@ -10,7 +10,7 @@ class CategoryController extends Controller
     {
         $categoriesList = $this->getCategories();
 
-        return view('categories/index', [
+        return view('categories.index', [
             'categoriesList' => $categoriesList,
         ]);
     }

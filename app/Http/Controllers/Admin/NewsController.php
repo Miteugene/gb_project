@@ -14,10 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newsMap = $this->getNews();
-        return view('news/index', [
-            'newsList' => $newsMap,
-        ]);
+        return view('admin.news.index');
     }
 
     /**
@@ -27,9 +24,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $newsMap = $this->getNews();
-        return view('admin/add_news', [
-        ]);
+        return view('admin.news.create');
     }
 
     /**
