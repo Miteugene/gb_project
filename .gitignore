@@ -12,17 +12,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/bootstrap
-/config
-/database
-/lang
-/public
-/storage
-/tests
 .editorconfig
 .env.example
-artisan
-composer.json
-composer.lock
-webpack.mix.json
-.styleci.yml

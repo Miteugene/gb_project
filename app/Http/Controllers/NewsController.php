@@ -14,7 +14,7 @@ class NewsController extends Controller
             if ( $newsObj['catId'] == $catId )
                 $newsList[] = $newsObj;
 
-        return view('news/index', [
+        return view('news.index', [
             'newsList' => $newsList,
         ]);
     }
@@ -23,7 +23,7 @@ class NewsController extends Controller
     {
         $newsList = $this->getNews();
 
-        return view('news/show', [
+        return view('news.show', [
             'news' => $newsList[$id],
         ]);
     }
