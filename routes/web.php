@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserFeedbackController;
+use App\Http\Controllers\UserOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -53,5 +55,8 @@ Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
 Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
     Route::get('/auth', [UserController::class, 'auth'])
     ->name('auth');
+
+    Route::resource('/feedback', UserFeedbackController::class);
+    Route::resource('/order', UserOrderController::class);
 });
 

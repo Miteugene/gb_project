@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class UserOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        return view('user.order.index');
     }
 
     /**
@@ -25,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -37,8 +36,17 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = Validator::validate($request->all(), [
-            'title' => 'required|string|min:1|max:250',
+            'name'   => 'required|string|min:3|max:50',
+            'phone'  => 'required|integer',
+            'email'  => 'required|email:rfc,dns',
+            'source' => 'required|url',
         ]);
+
+        $filename = storage_path('user_orders/'.$data['name'].microtime(true).'.json');
+
+        file_put_contents($filename, json_encode($data, JSON_PRETTY_PRINT));
+
+        return redirect()->route('user.order.index');
     }
 
     /**
