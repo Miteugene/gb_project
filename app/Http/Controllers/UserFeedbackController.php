@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class UserFeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        return view('user.feedback.index');
     }
 
     /**
@@ -25,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -37,8 +36,11 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = Validator::validate($request->all(), [
-            'title' => 'required|string|min:1|max:250',
+            'name'     => 'required|string|min:3|max:50',
+            'comment'  => 'required|string|min:3|max:500',
         ]);
+
+        return redirect()->route('user.feedback.index');
     }
 
     /**

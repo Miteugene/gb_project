@@ -1,9 +1,5 @@
 @extends('layouts.admin')
 
-@push('css')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
-@endpush
-
 @section('content')
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Добавить категорию</h1>
@@ -11,15 +7,15 @@
     </div>
   </div>
 
-  <div class="table-responsive">
-
-    <div class="form-components">
-        <form name="form-components" class="form-components__form">
-            <h2 class="form__header">Название категории</h2>
-            <input type="text" class="form-components__input-text" placeholder="Название категории" value="">
-            <button type="submit" class="form-components__button-submit">Добавить</button>
-        </form>
-    </div>
-
+  <div class="row">
+      <form method="post" action="{{ route('admin.categories.store') }}">
+          @csrf
+          <div class="form-group mb-3">
+              <label for="title">Название категории</label>
+              <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
+              @error('title') <div class="alert alert-danger">{{ $message }}</div> @enderror
+          </div>
+          <button type="submit mb-3" class="btn btn-success">Сохранить</button>
+      </form>
   </div>
 @endsection

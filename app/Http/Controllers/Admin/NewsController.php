@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -31,11 +32,17 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::validate($request->all(), [
+            'title'       => 'required|string|min:1|max:250',
+            'author'      => '',
+            'status'      => '',
+            'image'       => '',
+            'description' => '',
+        ]);
     }
 
     /**
