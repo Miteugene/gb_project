@@ -10,7 +10,7 @@
     @forelse($categoriesList as $category)
         <div class="col">
             <div class="card shadow-sm">
-                <a href="{{route('news.news', ['catId' => $category['catId'] ])}}" class="btn btn-sm btn-outline-secondary">{{$category['title']}}</a>
+                <a href="{{route('news.news', ['catSlug' => $category['slug'] ])}}" class="btn btn-sm btn-outline-secondary">{{$category['name']}}</a>
             </div>
         </div>
     @empty

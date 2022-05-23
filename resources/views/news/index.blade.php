@@ -10,13 +10,13 @@
     @forelse($newsList as $news)
         <div class="col">
             <div class="card shadow-sm">
-                <img class="bd-placeholder-img card-img-top" src="{{$news['image']}}" style="width:200px;">
+                <img class="bd-placeholder-img card-img-top" src="{{$news['image']}}" style="width:200px;" alt="image">
 
                 <div class="card-body">
                     <p class="card-text">{{$news['title']}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{{route('news.show', ['catId' => $news['catId'], 'id' => $news['id']])}}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                        <a href="{{route('news.show', ['catSlug' => $news['category']['slug'], 'newsSlug' => $news['slug']])}}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                     </div>
                     <small class="text-muted">Автор: {{$news['author']}}</small>
                     </div>

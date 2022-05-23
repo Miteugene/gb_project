@@ -36,18 +36,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
 
 
 Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
-    // /news -- Выведет категории новостей
     Route::get('/',      [CategoryController::class, 'index'])
         ->name('categories');
 
-    // /news/{catId} -- Новости определенной категрии
-    Route::get('/{catId}', [NewsController::class, 'index'])
-        ->where(['catId' => '\d+'])
+    Route::get('/{catSlug}', [CategoryController::class, 'show'])
         ->name('news');
 
-    // /news/{catId}/{id} -- Выведет конкретную новость
-    Route::get('/{catId}/{id}', [NewsController::class, 'show'])
-        ->where(['catId' => '\d+', 'id' => '\d+'])
+    Route::get('/{catSlug}/{newsSlug}', [NewsController::class, 'show'])
         ->name('show');
 });
 
