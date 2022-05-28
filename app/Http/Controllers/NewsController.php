@@ -2,29 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index(int $catId)
+    public function index(string $catSlug)
     {
-        $newsMap = $this->getNews();
-        $newsList = [];
-        foreach ($newsMap as $newsObj)
-            if ( $newsObj['catId'] == $catId )
-                $newsList[] = $newsObj;
 
-        return view('news.index', [
-            'newsList' => $newsList,
-        ]);
     }
 
-    public function show(int $catId, int $id)
+    public function show(string $catSlug, string $newsSlug)
     {
-        $newsList = $this->getNews();
+        $news = News::where('slug', $newsSlug)->first();
 
         return view('news.show', [
-            'news' => $newsList[$id],
+            'news' => $news,
         ]);
     }
 }
