@@ -15,12 +15,12 @@
             <div class="form-group mb-3">
                 <label for="title">Название</label>
                 <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ $news->title }}">
-                @error('title') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('title') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="author">Автор</label>
                 <input type="text" id="author" name="author" class="form-control @error('author') is-invalid @enderror" value="{{ $news->author }}">
-                @error('author') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('author') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="category_id">Категория</label>
@@ -39,17 +39,17 @@
                     <option @if($news->status === 'active')  selected @endif>active</option>
                     <option @if($news->status === 'blocked') selected @endif>blocked</option>
                 </select>
-                @error('status') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('status') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="image">Изображение</label>
                 <input type="file" id="image" name="image" class="form-control">
-                @error('image') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('image') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="text">Текст</label>
                 <textarea name="text" id="text" class="form-control @error('text') is-invalid @enderror">{{ $news->text }}</textarea>
-                @error('text') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('text') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <button type="submit mb-3" class="btn btn-success">Сохранить</button>
         </form>

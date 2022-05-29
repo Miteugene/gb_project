@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Categories\CategoryStoreRequest;
+use App\Http\Requests\Admin\Categories\CategoryUpdateRequest;
 use App\Models\Category;
 use App\Queries\QueryBuilderCategories;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -35,24 +37,20 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param CategoryStoreRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-        $validated = Validator::validate($request->all(), [
-            'name'        => 'required|string|min:1|max:250',
-            'description' => 'string',
-        ]);
-
+        $validated = $request->validated();
         $category = Category::create($validated);
 
         if ($category) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Category added');
+                ->with('success', __('message.admin.category.create.success'));
         }
 
-        return back()->with('error', 'Something went wrong')
+        return back()->with('error', __('message.admin.category.create.fail'))
             ->withInput();
     }
 
@@ -83,25 +81,21 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param CategoryUpdateRequest $request
      * @param Category $category
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
-        $validated = Validator::validate($request->all(), [
-            'name'        => 'string|min:1|max:250',
-            'description' => 'string',
-        ]);
-
+        $validated = $request->validated();
         $category->update($validated);
 
         if ($category) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Category updated');
+                ->with('success', __('message.admin.category.update.success'));
         }
 
-        return back()->with('error', 'Something went wrong')
+        return back()->with('error', __('message.admin.category.update.fail'))
             ->withInput();
     }
 
@@ -109,10 +103,18 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Category $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+
+            return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+
+            return response()->json(['error' => true], 400);
+        }
     }
 }
