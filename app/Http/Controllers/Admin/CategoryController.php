@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Queries\QueryBuilderCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,11 +13,13 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(QueryBuilderCategories $categories)
     {
-        return view('admin.categories.index');
+        return view('admin.categories.index', [
+            'categoryList' => $categories->getCategories(20),
+        ]);
     }
 
     /**
@@ -32,22 +36,33 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $data = Validator::validate($request->all(), [
-            'title' => 'required|string|min:1|max:250',
+        $validated = Validator::validate($request->all(), [
+            'name'        => 'required|string|min:1|max:250',
+            'description' => 'string',
         ]);
+
+        $category = Category::create($validated);
+
+        if ($category) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category added');
+        }
+
+        return back()->with('error', 'Something went wrong')
+            ->withInput();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
         //
     }
@@ -55,33 +70,48 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', [
+            'category' => $category,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $validated = Validator::validate($request->all(), [
+            'name'        => 'string|min:1|max:250',
+            'description' => 'string',
+        ]);
+
+        $category->update($validated);
+
+        if ($category) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category updated');
+        }
+
+        return back()->with('error', 'Something went wrong')
+            ->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
         //
     }

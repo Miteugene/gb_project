@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('source_id');
+            $table->unsignedBigInteger('source_id')->nullable();
             $table->string('slug')->unique()->nullable(false);
             $table->string('title');
             $table->text('text');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('author', 50);
             $table->enum('status', ['DRAFT', 'PUBLISHED', 'BLOCKED'])->default('DRAFT');
             $table->softDeletes();

@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="row">
+        @include('inc.messages')
         <form method="post" action="{{ route('user.order.store') }}">
             @csrf
             <div class="form-group mb-3">

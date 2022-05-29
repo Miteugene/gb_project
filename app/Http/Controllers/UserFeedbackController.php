@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,16 +32,24 @@ class UserFeedbackController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $data = Validator::validate($request->all(), [
-            'name'     => 'required|string|min:3|max:50',
-            'comment'  => 'required|string|min:3|max:500',
+        $validated = Validator::validate($request->all(), [
+            'name' => 'required|string|min:3|max:50',
+            'text' => 'required|string|min:3|max:500',
         ]);
 
-        return redirect()->route('user.feedback.index');
+        $feedback = UserFeedback::create($validated);
+
+        if ($feedback) {
+            return redirect()->route('user.feedback.index')
+                ->with('success', 'Feedback sent');
+        }
+
+        return back()->with('error', 'Something went wrong')
+            ->withInput();
     }
 
     /**

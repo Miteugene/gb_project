@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserSourceOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserOrderController extends Controller
+class UserSourceOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,22 +32,26 @@ class UserOrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $data = Validator::validate($request->all(), [
+        $validated = Validator::validate($request->all(), [
             'name'   => 'required|string|min:3|max:50',
-            'phone'  => 'required|integer',
+            'phone'  => '',
             'email'  => 'required|email:rfc,dns',
             'source' => 'required|url',
         ]);
 
-        $filename = storage_path('user_orders/'.$data['name'].microtime(true).'.json');
+        $userOrder = UserSourceOrder::create($validated);
 
-        file_put_contents($filename, json_encode($data, JSON_PRETTY_PRINT));
+        if ($userOrder) {
+            return redirect()->route('user.order.index')
+                ->with('success', 'Order sent');
+        }
 
-        return redirect()->route('user.order.index');
+        return back()->with('error', 'Something went wrong')
+            ->withInput();
     }
 
     /**
