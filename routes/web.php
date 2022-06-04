@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\Account\IndexController;
 use App\Http\Controllers\UserFeedbackController;
 use App\Http\Controllers\UserSourceOrderController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\InfoController as InfoController;
 use App\Http\Controllers\CategoryController as CategoryController;
 use App\Http\Controllers\UserController as UserController;
@@ -25,15 +28,18 @@ use App\Http\Controllers\UserController as UserController;
 Route::get('/', [InfoController::class, 'index'])
     ->name('info');
 
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/account', IndexController::class)->name('account');
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-    Route::get('/', AdminController::class)
-        ->name('index');
+    Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::get('/', AdminController::class)
+            ->name('index');
 
-    Route::resource('/categories', AdminCategoryController::class);
-    Route::resource('/news', AdminNewsController::class);
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+        Route::resource('/users', AdminUserController::class);
+    });
 });
-
 
 Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
     Route::get('/',      [CategoryController::class, 'index'])
@@ -55,3 +61,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
     Route::resource('/order', UserSourceOrderController::class);
 });
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
