@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\News;
 use App\Queries\QueryBuilderNews;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
@@ -118,7 +119,7 @@ class NewsController extends Controller
 
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
 
             return response()->json(['error' => true], 400);
         }
