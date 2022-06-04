@@ -8,17 +8,28 @@
     </div>
 
     <div class="row">
+        @include('inc.messages')
         <form method="post" action="{{ route('admin.news.store') }}">
             @csrf
             <div class="form-group mb-3">
                 <label for="title">Название</label>
                 <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
-                @error('title') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('title') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="author">Автор</label>
                 <input type="text" id="author" name="author" class="form-control @error('author') is-invalid @enderror" value="{{ old('author') }}">
-                @error('author') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('author') <x-alert type="danger" :message="$message"></x-alert> @enderror
+            </div>
+            <div class="form-group mb-3">
+                <label for="category_id">Категория</label>
+                <select class="form-control" name="category_id" id="category_id">
+                    @foreach($categories as $category)
+                        <option value="{{$category->id}}"
+                                @if($category->id === old('category_id')) selected @endif
+                        >{{ $category->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group mb-3">
                 <label for="status">Статус</label>
@@ -27,17 +38,17 @@
                     <option @if(old('status') === 'active')  selected @endif>active</option>
                     <option @if(old('status') === 'blocked') selected @endif>blocked</option>
                 </select>
-                @error('status') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('status') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="image">Изображение</label>
                 <input type="file" id="image" name="image" class="form-control">
-                @error('image') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('image') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
-                <label for="description">Описание</label>
-                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
-                @error('description') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                <label for="text">Текст</label>
+                <textarea name="text" id="text" class="form-control @error('text') is-invalid @enderror">{{ old('text') }}</textarea>
+                @error('text') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <button type="submit mb-3" class="btn btn-success">Сохранить</button>
         </form>
