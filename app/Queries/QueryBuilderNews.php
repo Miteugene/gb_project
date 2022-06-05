@@ -22,4 +22,10 @@ class QueryBuilderNews implements QueryBuilder
             ->orderByDesc('updated_at')
             ->paginate($perPage);
     }
+
+    public function addNews(array $newsList)
+    {
+        return $this->getBuilder()
+            ->insert($newsList);
+    }
 }

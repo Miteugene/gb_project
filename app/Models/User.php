@@ -21,7 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin'
+        'is_admin',
+        'last_login',
+        'vkontakte_id',
+        'github_id',
     ];
 
     /**
@@ -33,6 +36,12 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $dates = [
+        'last_login',
+    ];
+
+    public $timestamps = false;
 
     /**
      * The attributes that should be cast.

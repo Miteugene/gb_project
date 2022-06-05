@@ -19,4 +19,9 @@ class QueryBuilderUsers implements QueryBuilder
             ->select(['*'])
             ->paginate($perPage);
     }
+
+    public function getUserByEmail($email)
+    {
+        return $this->getBuilder()->where('email', $email)->first();
+    }
 }

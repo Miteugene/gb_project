@@ -15,6 +15,11 @@
                 Заказать источник
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('login') }}">
+                Вход
+            </a>
+        </li>
         @if (Auth::user() && Auth::user()->is_admin)
         <li class="nav-item">
             <a class="nav-link @if (request()->routeIs('admin.index')) active @endif" href="{{ route('admin.index') }}">
