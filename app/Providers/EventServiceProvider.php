@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserLastLoginEvent;
+use App\Listeners\UserLastLoginListener;
 use App\Models\Category;
 use App\Models\News;
 use App\Observers\CategoryObserver;
@@ -21,6 +23,14 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        UserLastLoginEvent::class => [
+          UserLastLoginListener::class,
+        ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class.'@handle',
+            \SocialiteProviders\GitHub\GitHubExtendSocialite::class.'@handle',
         ],
     ];
 
