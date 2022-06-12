@@ -10,7 +10,7 @@
     @forelse($newsList as $news)
         <div class="col">
             <div class="card shadow-sm">
-                <img class="bd-placeholder-img card-img-top" src="{{$news['image']}}" style="width:200px;" alt="image">
+                <img class="bd-placeholder-img card-img-top" src="{{ Storage::url($news['image']) }}" style="width:200px;" alt="image">
 
                 <div class="card-body">
                     <p class="card-text">{{$news['title']}}</p>

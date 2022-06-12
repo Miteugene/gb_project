@@ -4,18 +4,17 @@ namespace App\Services;
 
 use Illuminate\Support\Str;
 
-class NewsFormatService
+trait NewsFormatService
 {
-    public static function format(array $newsList): array
+    public static function formatImportNews(array $newsList, $categotyId, $author = ''): array
     {
-        // Временное топорное решение
-        return collect($newsList)->map(function ($value) {
+        return collect($newsList)->map(function ($value) use($categotyId, $author) {
             return [
-                'category_id'   => 1,
+                'category_id'   => $categotyId,
                 'title'         => $value['title'],
+                'source_url'    => $value['link'],
                 'text'          => $value['description'],
-                'author'        => 'yandex',
-                'slug'          => Str::slug('yandex-'.$value['title']),
+                'author'        => $author,
             ];
         })->toArray();
     }
