@@ -43,6 +43,9 @@
             </div>
             <div class="form-group mb-3">
                 <label for="image">Изображение</label>
+                @if($news->image)
+                    <img src="{{ Storage::url($news->image) }}" style="width: 350px;">
+                @endif
                 <input type="file" id="image" name="image" class="form-control">
                 @error('image') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
@@ -55,3 +58,14 @@
         </form>
     </div>
 @endsection
+
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#text' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

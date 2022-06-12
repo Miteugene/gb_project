@@ -27,7 +27,7 @@ class NewsUpdateRequest extends FormRequest
             'title'       => 'string|min:1|max:250',
             'author'      => 'string|min:1|max:50',
             'status'      => '',
-            'image'       => '',
+            'image'       => 'nullable|image|mimes:png,jpg',
             'text'        => 'string|min:1',
             'category_id' => '',
         ];

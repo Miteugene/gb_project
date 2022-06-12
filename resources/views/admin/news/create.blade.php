@@ -9,7 +9,7 @@
 
     <div class="row">
         @include('inc.messages')
-        <form method="post" action="{{ route('admin.news.store') }}">
+        <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3">
                 <label for="title">Название</label>
@@ -42,15 +42,30 @@
             </div>
             <div class="form-group mb-3">
                 <label for="image">Изображение</label>
-                <input type="file" id="image" name="image" class="form-control">
+                <input type="file" id="image" name="image" class="form-control" value="{{ old('image') }}" >
                 @error('image') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <div class="form-group mb-3">
                 <label for="text">Текст</label>
-                <textarea name="text" id="text" class="form-control @error('text') is-invalid @enderror">{{ old('text') }}</textarea>
+                <textarea name="text" id="text"
+                          class="form-control @error('text') is-invalid @enderror"
+                >
+                    {{ old('text') }}
+                </textarea>
                 @error('text') <x-alert type="danger" :message="$message"></x-alert> @enderror
             </div>
             <button type="submit mb-3" class="btn btn-success">Сохранить</button>
         </form>
     </div>
 @endsection
+
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#text' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

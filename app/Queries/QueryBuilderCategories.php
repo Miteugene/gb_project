@@ -28,4 +28,17 @@ class QueryBuilderCategories implements QueryBuilder
         return Category::select(['id', 'name', 'description', 'created_at'])
             ->findOrFail($id);
     }
+
+    public function addCategoryByExternalSource($catData)
+    {
+        $category = $this->getBuilder()->firstOrCreate(
+            [
+                'name' => $catData['name'],
+            ],
+            [
+                'description' => $catData['description'],
+            ]
+        );
+        return $category;
+    }
 }

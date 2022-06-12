@@ -28,4 +28,21 @@ class QueryBuilderNews implements QueryBuilder
         return $this->getBuilder()
             ->insert($newsList);
     }
+
+    public function addNewsByExternalSource($newsData)
+    {
+        $news = $this->getBuilder()->firstOrCreate(
+            [
+                'source_url' => $newsData['source_url'],
+            ],
+            [
+                'category_id'   => $newsData['category_id'],
+                'title'         => $newsData['title'],
+                'text'          => $newsData['text'],
+                'author'        => $newsData['author'],
+            ]
+        );
+
+        return $news;
+    }
 }

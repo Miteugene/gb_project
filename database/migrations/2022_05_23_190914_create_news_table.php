@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('source_id')->nullable();
-            $table->string('slug')->unique()->nullable(false);
+            $table->string('source_url')->nullable();
+            $table->string('slug')->unique()->nullable();
             $table->string('title');
             $table->text('text');
             $table->string('image')->nullable();

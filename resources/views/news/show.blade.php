@@ -9,7 +9,7 @@
 
     <div class="col">
         <div class="card shadow-sm">
-            <img class="bd-placeholder-img card-img-top" src="{{$news['image']}}" style="width:200px;">
+            <img class="bd-placeholder-img card-img-top" src="{{ Storage::url($news['image']) }}" style="width:200px;">
 
             <div class="card-body">
                 <h1 style="font-size: 24px;">{{$news['title']}}</h1>

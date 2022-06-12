@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\News\NewsUpdateRequest;
 use App\Models\Category;
 use App\Models\News;
 use App\Queries\QueryBuilderNews;
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -45,9 +46,14 @@ class NewsController extends Controller
      * @param NewsStoreRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(NewsStoreRequest $request)
+    public function store(NewsStoreRequest $request, UploadService $uploadService)
     {
         $validated = $request->validated();
+
+        if($request->hasFile('image')) {
+            $validated['image'] = $uploadService->uploadImage($request->file('image'));
+        }
+
         $news = News::create($validated);
 
         if ($news) {
@@ -92,9 +98,14 @@ class NewsController extends Controller
      * @param News $news
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(NewsUpdateRequest $request, News $news)
+    public function update(NewsUpdateRequest $request, UploadService $uploadService, News $news)
     {
         $validated = $request->validated();
+
+        if($request->hasFile('image')) {
+            $validated['image'] = $uploadService->uploadImage($request->file('image'));
+        }
+
         $news->update($validated);
 
         if ($news) {
